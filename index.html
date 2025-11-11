@@ -1,410 +1,254 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificação de Convites - Formatura 2025</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- jsPDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
-    
-    <style>
-        @keyframes fade-in {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in { animation: fade-in 0.5s ease-out; }
-        .hidden { display: none; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .animate-spin { animation: spin 1s linear infinite; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificação de Convites - Formatura 2025</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+
+  <style>
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in { animation: fade-in 0.5s ease-out; }
+    .hidden { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .animate-spin { animation: spin 1s linear infinite; }
+  </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
-    
-    <!-- Header -->
-    <header class="bg-white shadow-sm border-b border-slate-200">
-        <div class="max-w-4xl mx-auto px-4 py-6">
-            <div class="flex items-center gap-3">
-                <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
-                <div>
-                    <h1 class="text-2xl font-bold text-slate-800">Verificação de Convites</h1>
-                    <p class="text-sm text-slate-600">Comitê de Formatura - Turma 2025</p>
-                </div>
+
+  <!-- Header -->
+  <header class="bg-white shadow-sm border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 py-6">
+      <div class="flex items-center gap-3">
+        <!-- Ícone de envelope -->
+        <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+
+        <div>
+          <h1 class="text-2xl font-bold text-slate-800">Verificação de Convites</h1>
+          <p class="text-sm text-slate-600">Comitê de Formatura - Turma 2025</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="max-w-2xl mx-auto px-4 py-12">
+    <div class="bg-white rounded-2xl shadow-lg p-8 mb-6">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-slate-800 mb-3">Emita seu Convite</h2>
+        <p class="text-slate-600">Preencha seus dados abaixo para verificar e emitir seu convite de formatura</p>
+      </div>
+
+      <form id="verificationForm" class="space-y-6" onsubmit="handleVerification(event)">
+        <div>
+          <label for="nome" class="block text-sm font-semibold text-slate-700 mb-2">Nome Completo</label>
+          <input type="text" id="nome" required class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" placeholder="Digite seu nome completo">
+        </div>
+
+        <div>
+          <label for="telefone" class="block text-sm font-semibold text-slate-700 mb-2">Telefone</label>
+          <input type="text" id="telefone" required class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" placeholder="(00) 00000-0000" oninput="formatPhone(this)">
+        </div>
+
+        <div>
+          <label for="tipo" class="block text-sm font-semibold text-slate-700 mb-2">Tipo de Convidado</label>
+          <select id="tipo" required class="w-full px-4 py-3 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all">
+            <option value="">Selecione o tipo</option>
+            <option value="convidado">Convidado</option>
+            <option value="padrinho">Padrinho</option>
+            <option value="madrinha">Madrinha</option>
+            <option value="paraninfo">Paraninfo</option>
+            <option value="homenageado">Homenageado</option>
+            <option value="familiar">Familiar</option>
+          </select>
+        </div>
+
+        <button type="submit" id="submitBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-[1.02]">
+          Verificar Dados
+        </button>
+      </form>
+    </div>
+
+    <div id="resultContainer" class="hidden"></div>
+
+    <div class="mt-8 text-center text-sm text-slate-500">
+      <p>Colégio Técnico de Bom Jesus - UFPI</p>
+      <p class="mt-1">©2025 Developed by Jamison Gabriel</p>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="convidados.js"></script>
+
+  <script>
+    // =============================== FUNÇÕES ===============================
+
+    function formatPhone(input) {
+      let v = input.value.replace(/\D/g, '');
+      v = v.replace(/^(\d{2})(\d)/g, '($1) $2');
+      v = v.replace(/(\d{5})(\d)/, '$1-$2');
+      input.value = v.substring(0, 15);
+    }
+
+    function normalizeString(str) {
+      return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+    }
+
+    function handleVerification(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.37 0 0 5.37 0 12h4zm2 5.29A7.96 7.96 0 014 12H0c0 3.04 1.13 5.82 3 7.94l3-2.65z"/></svg>Verificando...</span>';
+
+      setTimeout(() => {
+        const nome = document.getElementById('nome').value;
+        const telefone = document.getElementById('telefone').value;
+        const tipo = document.getElementById('tipo').value;
+
+        const guest = CONVIDADOS.find(g =>
+          normalizeString(g.nome) === normalizeString(nome) &&
+          g.telefone.replace(/\D/g, '') === telefone.replace(/\D/g, '') &&
+          g.tipo.toLowerCase() === tipo.toLowerCase()
+        );
+
+        btn.disabled = false;
+        btn.innerHTML = 'Verificar Dados';
+
+        const result = document.getElementById('resultContainer');
+        result.classList.remove('hidden');
+        result.className = 'bg-white rounded-2xl shadow-lg p-8 animate-fade-in';
+
+        if (guest) showSuccess(guest);
+        else showError();
+      }, 800);
+    }
+
+    function showSuccess(guest) {
+      const g = JSON.stringify(guest).replace(/"/g, '&quot;');
+      document.getElementById('resultContainer').innerHTML = `
+        <div>
+          <div class="flex items-center gap-3 mb-6 text-green-600">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <div>
+              <h3 class="text-xl font-bold">Dados Confirmados!</h3>
+              <p class="text-sm text-slate-600">Seu convite está pronto para ser emitido</p>
             </div>
-        </div>
-    </header>
+          </div>
+          <div class="bg-blue-50 rounded-lg p-6 mb-6 border border-blue-100">
+            <h4 class="font-semibold text-slate-800 mb-3">Informações do Convite:</h4>
+            <p><b>Nome:</b> ${guest.nome}</p>
+            <p><b>Tipo:</b> ${guest.tipo}</p>
+            <p><b>Convidado por:</b> ${guest.aluno_responsavel}</p>
+          </div>
+          <div class="flex gap-4 flex-col sm:flex-row">
+            <button onclick='generatePDF(${g})' class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 px-6 rounded-lg shadow-md flex items-center justify-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg> Emitir Convite (PDF)
+            </button>
+            <button onclick="resetForm()" class="px-6 py-4 border-2 border-slate-300 text-slate-700 font-semibold rounded-lg hover:bg-slate-50 transition-all">Nova Consulta</button>
+          </div>
+        </div>`;
+    }
 
-    <!-- Main Content -->
-    <main class="max-w-2xl mx-auto px-4 py-12">
-        
-        <!-- Card Principal -->
-        <div class="bg-white rounded-2xl shadow-lg p-8 mb-6">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold text-slate-800 mb-3">Emita seu Convite</h2>
-                <p class="text-slate-600">
-                    Preencha seus dados abaixo para verificar e emitir seu convite de formatura
-                </p>
+    function showError() {
+      document.getElementById('resultContainer').innerHTML = `
+        <div>
+          <div class="flex items-center gap-3 mb-6 text-red-600">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <div>
+              <h3 class="text-xl font-bold">Dados não encontrados</h3>
+              <p class="text-sm text-slate-600">Verifique suas informações e tente novamente</p>
             </div>
+          </div>
+          <button onclick="resetForm()" class="w-full bg-slate-600 hover:bg-slate-700 text-white font-semibold py-4 px-6 rounded-lg shadow-md">Tentar Novamente</button>
+        </div>`;
+    }
 
-            <!-- Formulário -->
-            <form id="verificationForm" class="space-y-6" onsubmit="handleVerification(event)">
-                
-                <!-- Nome Completo -->
-                <div>
-                    <label for="nome" class="block text-sm font-semibold text-slate-700 mb-2">
-                        Nome Completo
-                    </label>
-                    <input
-                        type="text"
-                        id="nome"
-                        required
-                        class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
-                        placeholder="Digite seu nome completo"
-                    />
-                </div>
+    function resetForm() {
+      document.getElementById('verificationForm').reset();
+      document.getElementById('resultContainer').classList.add('hidden');
+    }
 
-                <!-- Telefone -->
-                <div>
-                    <label for="telefone" class="block text-sm font-semibold text-slate-700 mb-2">
-                        Telefone
-                    </label>
-                    <input
-                        type="text"
-                        id="telefone"
-                        required
-                        class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
-                        placeholder="(00) 00000-0000"
-                        oninput="formatPhone(this)"
-                    />
-                </div>
+    // ⚙️ Geração de PDF — versão compatível com GitHub Pages
+    async function generatePDF(guest) {
+      const jsPDF = window.jspdf ? window.jspdf.jsPDF : null;
+      if (!jsPDF) {
+        alert("Erro ao carregar jsPDF. Tente recarregar a página.");
+        return;
+      }
 
-                <!-- Tipo de Convidado -->
-                <div>
-                    <label for="tipo" class="block text-sm font-semibold text-slate-700 mb-2">
-                        Tipo de Convidado
-                    </label>
-                    <select
-                        id="tipo"
-                        required
-                        class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none bg-white"
-                    >
-                        <option value="">Selecione o tipo</option>
-                        <option value="convidado">Convidado</option>
-                        <option value="padrinho">Padrinho</option>
-                        <option value="madrinha">Madrinha</option>
-                        <option value="paraninfo">Paraninfo</option>
-                        <option value="homenageado">Homenageado</option>
-                        <option value="familiar">Familiar</option>
-                    </select>
-                </div>
+      const doc = new jsPDF({ unit: "mm", format: "a4" });
+      const w = doc.internal.pageSize.getWidth();
+      const h = doc.internal.pageSize.getHeight();
 
-                <!-- Botão Verificar -->
-                <button
-                    type="submit"
-                    id="submitBtn"
-                    class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-md"
-                >
-                    Verificar Dados
-                </button>
-            </form>
-        </div>
+      doc.setFillColor(59,130,246);
+      doc.rect(0,0,w,60,"F");
+      doc.setTextColor(255,255,255);
+      doc.setFontSize(24);
+      doc.setFont("helvetica","bold");
+      doc.text("CONVITE DE FORMATURA", w/2, 25, { align:"center" });
+      doc.setFontSize(12);
+      doc.text("Colégio Técnico de Bom Jesus - UFPI", w/2, 35, { align:"center" });
+      doc.text("Turma 2025", w/2, 42, { align:"center" });
 
-        <!-- Resultado da Verificação -->
-        <div id="resultContainer" class="hidden"></div>
+      doc.setTextColor(0);
+      doc.setFontSize(16);
+      doc.text(`Convidado(a): ${guest.nome}`, 20, 90);
+      doc.text(`Tipo: ${guest.tipo}`, 20, 100);
+      doc.text(`Convidado por: ${guest.aluno_responsavel}`, 20, 110);
+      doc.text("Evento: Formatura da Turma 2025", 20, 130);
+      doc.text("Local: Auditório da UFPI - Bom Jesus - PI", 20, 140);
+      doc.text("Data: 16/12/2025 às 19:30", 20, 150);
 
-        <!-- Footer Info -->
-        <div class="mt-8 text-center text-sm text-slate-500">
-            <p>Colégio Técnico de Bom Jesus - UFPI</p>
-            <p class="mt-1">©2025 Developed by Jamison Gabriel</p>
-        </div>
-    </main>
+      doc.setFontSize(10);
+      doc.text("© 2025 - Colégio Técnico de Bom Jesus | Convite Digital Oficial", w/2, h-10, { align:"center" });
 
-    <!-- Scripts -->
-    <script src="convidados.js"></script>
+      // Força o download
+      const blob = doc.output("blob");
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `Convite_${guest.nome.replace(/\s+/g,"_")}.pdf`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+  </script>
 
-    <script>
-        // ═══════════════════════════════════════════════════════════
-        // 🔧 FUNÇÕES DO SISTEMA
-        // ═══════════════════════════════════════════════════════════
-
-        // Máscara de telefone
-        function formatPhone(input) {
-            let value = input.value.replace(/\D/g, '');
-            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
-            value = value.replace(/(\d{5})(\d)/, '$1-$2');
-            input.value = value.substring(0, 15);
-        }
-
-        // Normalizar string (remove acentos e minúsculas)
-        function normalizeString(str) {
-            return str.toLowerCase()
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .trim();
-        }
-
-        // Verificação
-        function handleVerification(event) {
-            event.preventDefault();
-            
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `
-                <span class="flex items-center justify-center gap-2">
-                    <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                    Verificando...
-                </span>
-            `;
-
-            setTimeout(() => {
-                const nome = document.getElementById('nome').value;
-                const telefone = document.getElementById('telefone').value;
-                const tipo = document.getElementById('tipo').value;
-
-                const normalizedNome = normalizeString(nome);
-                const cleanedTelefone = telefone.replace(/\D/g, '');
-
-                const guest = CONVIDADOS.find(g => {
-                    const guestNome = normalizeString(g.nome);
-                    const guestTelefone = g.telefone.replace(/\D/g, '');
-                    return guestNome === normalizedNome && 
-                           guestTelefone === cleanedTelefone && 
-                           g.tipo.toLowerCase() === tipo.toLowerCase();
-                });
-
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Verificar Dados';
-
-                const resultContainer = document.getElementById('resultContainer');
-                resultContainer.classList.remove('hidden');
-                resultContainer.className = 'bg-white rounded-2xl shadow-lg p-8 animate-fade-in';
-
-                if (guest) {
-                    showSuccess(guest);
-                } else {
-                    showError();
-                }
-            }, 1000);
-        }
-
-        function showSuccess(guest) {
-            const guestJson = JSON.stringify(guest).replace(/"/g, '&quot;');
-            document.getElementById('resultContainer').innerHTML = `
-                <div>
-                    <div class="flex items-center gap-3 mb-6 text-green-600">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <div>
-                            <h3 class="text-xl font-bold">Dados Confirmados!</h3>
-                            <p class="text-sm text-slate-600">Seu convite está pronto para ser emitido</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-blue-50 rounded-lg p-6 mb-6 border border-blue-100">
-                        <h4 class="font-semibold text-slate-800 mb-3">Informações do Convite:</h4>
-                        <div class="space-y-2 text-sm">
-                            <p><span class="font-semibold">Nome:</span> ${guest.nome}</p>
-                            <p><span class="font-semibold">Tipo:</span> ${guest.tipo}</p>
-                            <p><span class="font-semibold">Convidado por:</span> ${guest.aluno_responsavel}</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-4 flex-col sm:flex-row">
-                        <button onclick='generatePDF(${guestJson})'
-                            class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-md flex items-center justify-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
-                            Emitir Convite (PDF)
-                        </button>
-                        <button onclick="resetForm()"
-                            class="px-6 py-4 border-2 border-slate-300 text-slate-700 font-semibold rounded-lg hover:bg-slate-50 transition-all">
-                            Nova Consulta
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function showError() {
-            document.getElementById('resultContainer').innerHTML = `
-                <div>
-                    <div class="flex items-center gap-3 mb-6 text-red-600">
-                        <svg class="w-8 h-8 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <div>
-                            <h3 class="text-xl font-bold">Dados não encontrados</h3>
-                            <p class="text-sm text-slate-600">Infelizmente, não foi possível verificar seu convite</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-red-50 rounded-lg p-6 mb-6 border border-red-100">
-                        <p class="text-slate-700 mb-4 leading-relaxed">
-                            Prezado(a), lamentamos informar que os dados fornecidos não constam em nossa lista de convidados.
-                        </p>
-                        <p class="text-slate-700 mb-4 leading-relaxed">
-                            Caso você acredite que houve um equívoco, entre em contato com o(a) aluno(a) responsável por seu convite.
-                        </p>
-                        <div class="bg-white rounded-lg p-4 mt-4 border border-red-200">
-                            <p class="text-sm font-semibold text-slate-800 mb-2">Dicas para verificação:</p>
-                            <ul class="text-sm text-slate-600 space-y-1 list-disc list-inside">
-                                <li>Verifique se digitou seu nome completo corretamente</li>
-                                <li>Confirme o número de telefone</li>
-                                <li>Selecione o tipo de convidado adequado</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <button onclick="resetForm()"
-                        class="w-full bg-slate-600 hover:bg-slate-700 text-white font-semibold py-4 px-6 rounded-lg transition-all shadow-md">
-                        Tentar Novamente
-                    </button>
-                </div>
-            `;
-        }
-
-        function resetForm() {
-            document.getElementById('verificationForm').reset();
-            document.getElementById('resultContainer').classList.add('hidden');
-        }
-
-        function generatePDF(guest) {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({
-                orientation: 'portrait',
-                unit: 'mm',
-                format: 'a4'
-            });
-
-            const pageWidth = doc.internal.pageSize.getWidth();
-            const pageHeight = doc.internal.pageSize.getHeight();
-
-            doc.setFillColor(59, 130, 246);
-            doc.rect(0, 0, pageWidth, 60, 'F');
-
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(24);
-            doc.setFont('helvetica', 'bold');
-            doc.text('CONVITE DE FORMATURA', pageWidth / 2, 25, { align: 'center' });
-
-            doc.setFontSize(12);
-            doc.setFont('helvetica', 'normal');
-            doc.text('Colégio Técnico de Bom Jesus - UFPI', pageWidth / 2, 35, { align: 'center' });
-            doc.text('Turma 2025', pageWidth / 2, 42, { align: 'center' });
-
-            doc.setFillColor(37, 99, 235);
-            doc.rect(30, 75, pageWidth - 60, 20, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(18);
-            doc.setFont('helvetica', 'bold');
-            doc.text(guest.tipo.toUpperCase(), pageWidth / 2, 88, { align: 'center' });
-
-            doc.setTextColor(30, 41, 59);
-            doc.setFontSize(16);
-            doc.setFont('helvetica', 'bold');
-            doc.text('Convidado(a):', 30, 115);
-            doc.setFont('helvetica', 'normal');
-            doc.text(guest.nome, 30, 125);
-
-            doc.setFontSize(14);
-            doc.setFont('helvetica', 'bold');
-            doc.text('Evento:', 30, 145);
-            doc.setFontSize(12);
-            doc.setFont('helvetica', 'normal');
-            doc.text('Formatura da Turma 2025', 30, 153);
-            doc.text('Curso Técnico em Informática', 30, 160);
-
-            doc.setFontSize(14);
-            doc.setFont('helvetica', 'bold');
-            doc.text('Local:', 30, 175);
-            doc.setFontSize(12);
-            doc.setFont('helvetica', 'normal');
-            doc.text('Auditório da UFPI', 30, 183);
-            doc.text('Bom Jesus - Piauí', 30, 190);
-
-            doc.setFontSize(14);
-            doc.setFont('helvetica', 'bold');
-            doc.text('Data e Horário:', 30, 205);
-            doc.setFontSize(12);
-            doc.setFont('helvetica', 'normal');
-            doc.text('16 de Dezembro de 2025 às 19:30', 30, 213);
-
-            doc.setFontSize(14);
-            doc.setFont('helvetica', 'bold');
-            doc.text('Convidado por:', 30, 228);
-            doc.setFontSize(12);
-            doc.setFont('helvetica', 'normal');
-            doc.text(guest.aluno_responsavel, 30, 236);
-
-            doc.setDrawColor(59, 130, 246);
-            doc.setLineWidth(0.5);
-            doc.line(30, 250, pageWidth - 30, 250);
-
-            const dataEmissao = new Date().toLocaleString('pt-BR');
-            doc.setFontSize(9);
-            doc.setTextColor(100, 116, 139);
-            doc.text(`Convite emitido em: ${dataEmissao}`, pageWidth / 2, 260, { align: 'center' });
-
-            doc.setFillColor(59, 130, 246);
-            doc.rect(0, pageHeight - 20, pageWidth, 20, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(10);
-            doc.text('© 2025 - Colégio Técnico de Bom Jesus | Convite Digital Oficial', pageWidth / 2, pageHeight - 8, { align: 'center' });
-
-            doc.save(`Convite_${guest.nome}.pdf`);
-        }
-    </script>
-    <script>
+  <!-- Marca Jotta -->
+  <script>
   (function() {
     if (document.getElementById('marca-jotta')) return;
-
     const badge = document.createElement('a');
     badge.id = 'marca-jotta';
     badge.href = 'https://www.instagram.com/jotta.sx_';
     badge.target = '_blank';
     badge.rel = 'noopener noreferrer';
-    badge.style.cssText = `
-      display: flex;
-      align-items: center;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 6px 10px;
-      background: #ffffff;
-      border-radius: 8px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-      font-size: 12px;
-      color: #000000;
-      text-decoration: none;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      z-index: 9999;
-    `;
-
+    badge.style.cssText = 'display:flex;align-items:center;position:fixed;bottom:20px;right:20px;padding:6px 10px;background:#fff;border-radius:8px;font-family:system-ui,sans-serif;font-size:12px;color:#000;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.15);z-index:9999;';
     const img = document.createElement('img');
     img.src = 'https://raw.githubusercontent.com/jottaXXX/JottaMarcaD-agua/main/assets/logo-jotta.jpg';
     img.alt = 'Logo Jotta';
     img.style.cssText = 'width:20px;height:20px;margin-right:8px;border-radius:50%;object-fit:cover;';
-
     const span = document.createElement('span');
     span.textContent = 'Feito por Jamison Gabriel';
-
     badge.appendChild(img);
     badge.appendChild(span);
-
-    document.addEventListener('DOMContentLoaded', function() {
-      document.body.appendChild(badge);
-    });
+    document.addEventListener('DOMContentLoaded', ()=>document.body.appendChild(badge));
   })();
-</script>
+  </script>
 </body>
 </html>
