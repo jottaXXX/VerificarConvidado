@@ -364,5 +364,47 @@
             doc.save(`Convite_${guest.nome}.pdf`);
         }
     </script>
+    <script>
+  (function() {
+    if (document.getElementById('marca-jotta')) return;
+
+    const badge = document.createElement('a');
+    badge.id = 'marca-jotta';
+    badge.href = 'https://www.instagram.com/jotta.sx_';
+    badge.target = '_blank';
+    badge.rel = 'noopener noreferrer';
+    badge.style.cssText = `
+      display: flex;
+      align-items: center;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 6px 10px;
+      background: #ffffff;
+      border-radius: 8px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-size: 12px;
+      color: #000000;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      z-index: 9999;
+    `;
+
+    const img = document.createElement('img');
+    img.src = 'https://raw.githubusercontent.com/jottaXXX/JottaMarcaD-agua/main/assets/logo-jotta.jpg';
+    img.alt = 'Logo Jotta';
+    img.style.cssText = 'width:20px;height:20px;margin-right:8px;border-radius:50%;object-fit:cover;';
+
+    const span = document.createElement('span');
+    span.textContent = 'Feito por Jamison Gabriel';
+
+    badge.appendChild(img);
+    badge.appendChild(span);
+
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.appendChild(badge);
+    });
+  })();
+</script>
 </body>
 </html>
