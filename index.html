@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convites de Formatura - Colégio Técnico de Bom Jesus</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="hero">
+            <img src="https://customer-assets.emergentagent.com/job_ccc59e95-7fd4-48e3-a746-8b1aa59da1db/artifacts/qf1bp2ln_1762870726512.png" 
+                 alt="Logo CTBJ" 
+                 class="logo">
+            <h1>Emita seu Convite</h1>
+            <p>Preencha seus dados abaixo para verificar e emitir seu convite de formatura</p>
+        </header>
+
+        <main>
+            <form id="conviteForm" class="form-card">
+                <div class="form-group">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000" maxlength="15" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="tipo">Tipo de Convidado</label>
+                    <select id="tipo" name="tipo" required>
+                        <option value="">Selecione o tipo</option>
+                        <option value="convidado">Convidado</option>
+                        <option value="padrinho">Padrinho</option>
+                        <option value="madrinha">Madrinha</option>
+                        <option value="paraninfo">Paraninfo</option>
+                        <option value="homenageado">Homenageado</option>
+                        <option value="familiar">Familiar</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-verificar">
+                    <span id="btnText">Verificar Dados</span>
+                    <span id="btnLoader" class="loader" style="display: none;"></span>
+                </button>
+            </form>
+
+            <div id="resultado" class="resultado-card" style="display: none;">
+                <div class="resultado-header">
+                    <h2>Convite Encontrado!</h2>
+                    <div class="check-icon">✓</div>
+                </div>
+                
+                <div class="resultado-info" id="resultadoInfo"></div>
+
+                <button id="btnDownload" class="btn-download">
+                    Baixar Convite em PDF
+                </button>
+            </div>
+
+            <div id="toast" class="toast"></div>
+        </main>
+
+        <footer>
+            <p class="footer-title">Colégio Técnico de Bom Jesus - UFPI</p>
+            <p class="footer-copy">©2025 Developed by Jamison Gabriel</p>
+            <a href="https://www.instagram.com/jotta.sx_" target="_blank" rel="noopener noreferrer" class="footer-link">
+                <img src="https://raw.githubusercontent.com/jottaXXX/JottaMarcaD-agua/main/assets/logo-jotta.jpg" 
+                     alt="Logo Jotta" 
+                     class="footer-logo">
+                Feito por Jamison Gabriel
+            </a>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+    <script src="convidados.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
