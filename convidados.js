@@ -7,9 +7,9 @@ const CONVIDADOS = [
         aluno_responsavel: "João Pedro Oliveira"
     },
     {
-        nome: "Carlos Eduardo Ferreira",
-        telefone: "(89) 99876-5432",
-        tipo: "padrinho",
+        nome: "Jamison",
+        telefone: "(00) 00000-0000",
+        tipo: "convidado",
         aluno_responsavel: "Ana Clara Souza"
     },
     {
