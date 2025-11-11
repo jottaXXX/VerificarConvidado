@@ -9,7 +9,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- jsPDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.legacy.min.js"></script>
+
 
   <style>
     @keyframes fade-in {
@@ -185,17 +186,12 @@
       document.getElementById('resultContainer').classList.add('hidden');
     }
 
-    // ⚙️ Geração de PDF — versão compatível com GitHub Pages
-    async function generatePDF(guest) {
-      const jsPDF = window.jspdf ? window.jspdf.jsPDF : null;
-      if (!jsPDF) {
-        alert("Erro ao carregar jsPDF. Tente recarregar a página.");
-        return;
-      }
+   // ⚙️ Geração de PDF — versão compatível com GitHub Pages
+async function generatePDF(guest) {
+  const doc = new jsPDF({ unit: "mm", format: "a4" });
+  const w = doc.internal.pageSize.getWidth();
+  const h = doc.internal.pageSize.getHeight();
 
-      const doc = new jsPDF({ unit: "mm", format: "a4" });
-      const w = doc.internal.pageSize.getWidth();
-      const h = doc.internal.pageSize.getHeight();
 
       doc.setFillColor(59,130,246);
       doc.rect(0,0,w,60,"F");
